@@ -52,7 +52,7 @@ public class Parser {
       System.out.println("-----> parsing <members>:");
       Node first = parseMember();
       Token token = lex.getNextToken();
-      if ( token.isKind("}")) {
+      if ( if (token.matches("single", "}")) {) {
          return new Node("members", first, null, null);
       }
       else {
@@ -64,10 +64,64 @@ public class Parser {
 
    public Node parseMember() {
       System.out.println("-----> parsing <member>:");
+      Token token = lex.getNextToken();
+      if (token.isKind("static")) { //child might be a <staticMethod> or <staticField>
+         Token name = lex.getNextToken();
+         errorCheck(name, "name");
+         token = lex.getNextToken();
+         if (token.matches("single", "(")) { //child is a <staticMethod>
+            lex.putBackToken(token);
+            lex.putBackToken(name);
+            Node first = parseStaticMethod();
+            return new Node("member", first, null, null);
+         }
+         else { //child is a <staticField>
+            lex.putBackToken(token);
+            lex.putBackToken(name);
+            Node first = parseStaticField();
+            return new Node("member", first, null, null);
+         }
+      }
+      else if (token.isKind("name") { //child might be a <instanceField> or <instanceMethod>
+         Token name = token;
+         token = lex.getNextToken();
+         if (token.matches("single", "(")) { //child is an <instanceMethod>
+            lex.putBackToken(token);
+            lex.putBackToken(name);
+            Node first = parseInstanceMethod();
+            return new Node("member", first, null, null);
+         }
+         else if { //child is an <instanceMethod>
+            lex.putBackToken(token);
+            lex.putBackToken(name);
+            Node first = parseInstanceMethod();
+            return new Node("member", first, null, null);
+         }
+      }
+      else if (token.isKind("className")) { //child is a <constructor>
+         lex.putBackToken(token);
+         Node first = parseConstructor();
+         return new Node("member", first, null, null);
+      }
+      else { // error
+         System.out.println("expected static or name or className and saw " + token );
+         System.exit(1);
+         return null;
+      }
    }
 
    public Node parseStaticField() {
       System.out.println("-----> parsing <staticField>:");
+      Node name = lex.getNextToken();
+      errorCheck(name, "name");
+      Token token = lex.getNextToken();
+      if (token.matches("single", "=")) { //child is an <expression>
+         Node first = parseExpression();
+         return new Node("staticField", name.getDetails(), first, null, null);
+      }
+      else { //node is a declaration
+         return new Node("staticField", name.getDetails(), null, null, null);
+      }
    }
 
    public Node parseStaticMethod() {
