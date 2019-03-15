@@ -26,10 +26,10 @@ public class Parser {
       System.out.println("-----> parsing <classes>:");
       Node first = parseClass();
       Token token = lex.getNextToken();
-      if ( token.isKind("eof")) {
+      if ( token.isKind("eof")) { //there are no more classes
          return new Node("classes", first, null, null);
       }
-      else {
+      else { //there is another class
          lex.putBackToken(token);
          Node second = parseClasses();
          return new Node("classes", first, second, null);
@@ -42,8 +42,8 @@ public class Parser {
       errorCheck(token, "class");
       Token name = lex.getNextToken();
       errorCheck(name, "className");
-      token.getNextToken()
-      errorCheck(token, "single", "{")
+      token.getNextToken();
+      errorCheck(token, "single", "{");
       Node first = parseMembers();
       return new Node("class", name.getDetails(), first, null, null);
    }
@@ -52,10 +52,10 @@ public class Parser {
       System.out.println("-----> parsing <members>:");
       Node first = parseMember();
       Token token = lex.getNextToken();
-      if ( if (token.matches("single", "}")) {) {
+      if (token.matches("single", "}")) { //there are no more members
          return new Node("members", first, null, null);
       }
-      else {
+      else { //there is another member
          lex.putBackToken(token);
          Node second = parseMembers();
          return new Node("members", first, second, null);
@@ -91,7 +91,7 @@ public class Parser {
             Node first = parseInstanceMethod();
             return new Node("member", first, null, null);
          }
-         else if { //child is an <instanceMethod>
+         else { //child is an <instanceMethod>
             lex.putBackToken(token);
             lex.putBackToken(name);
             Node first = parseInstanceMethod();
