@@ -37,7 +37,7 @@ public class Lexer {
             int sym;  // holds current symbol
             do {
                 sym = getNextSymbol();
-// System.out.println("current symbol: " + sym + " state = " + state );
+                // System.out.println("current symbol: " + sym + " state = " + state );
                 if ( state == 1 ) {
                     if ( sym == 9 || sym == 10 || sym == 13 ||
                             sym == 32 ) {// whitespace
@@ -53,11 +53,11 @@ public class Lexer {
                     }
                     else if ( digit( sym ) ) {
                         data += (char) sym;
-                        state = 9; //go to num
+                        state = 11; //go to num (changed from 9 to 11)
                     }
                     else if ( sym == '-' ) {
                         data += (char) sym;
-                        state = 8; //go to num
+                        state = 10; //go to num (changed from 8 to 10)
                     }
                     else if ( sym == '"' ) {
                         state = 4; //go to string
@@ -67,14 +67,14 @@ public class Lexer {
                             sym == ',' || sym == '=' || sym == '.'
                     ) {
                         data += (char) sym;
-                        state = 11;
+                        state = 13; // (changed from 11 to 13)
                         done = true;
                     }
                     else if ( sym == '/' ) {
-                        state = 12;
+                        state = 14; // (changed from 12 to 14)
                     }
                     else if ( sym == -1 ) {// end of file
-                        state = 14;
+                        state = 16; // (changed from 14 to 16)
                         done = true;
                     }
                     else {
@@ -111,31 +111,31 @@ public class Lexer {
                         state = 5;
                     }
                     else if(sym =='"'){
-                        state = 6;
+                        state = 8; // (changed from 6 to 8)
                     }
                 }
                 else if ( state == 5 ) {// check for special char/instuction
                     if (digit(sym)) {
                         escapeCharData = "";
                         escapeCharData += (char) sym;
-                        state = 51;
+                        state = 6; // (changed 51 to 6)
                     }
                     else {
                         error("Error in lexical analysis phase with symbol "
                                 + sym + " in state " + state );
                     }
                 }
-                else if ( state == 51 ) {// check for special char/instuction
+                else if ( state == 6 ) {// check for special char/instuction (changed 51 to 6)
                     if (digit(sym)){
                         escapeCharData += (char) sym;
-                        state = 52;
+                        state = 7; // (changed 52 to 7)
                     }
                     else {
                         error("Error in lexical analysis phase with symbol "
                                 + sym + " in state " + state );
                     }
                 }
-                else if ( state == 52) {// check for special char/instuction
+                else if ( state == 7) {// check for special char/instuction (changed 52 to 7)
                     if (digit(sym)) {
                         escapeCharData += (char) sym;
                         data += (char) Integer.parseInt(escapeCharData);
@@ -146,7 +146,7 @@ public class Lexer {
                                 + sym + " in state " + state );
                     }
                 }
-                else if ( state == 6 ) {
+                else if ( state == 8 ) { // (changed 6 to 8
                     putBackSymbol( sym );
                     done = true;
                     return new Token( "string", data );
@@ -156,52 +156,52 @@ public class Lexer {
                 // note: states 9, and 10 are accepting states with
                 //       no arcs out of them, so they are handled
                 //       in the arc going into them
-                else if ( state ==8 ) {// saw - neg. num
+                else if ( state == 10 ) {// saw - neg. num (changed 8 to 10
                     if ( digit( sym ) ) {
                         data += (char) sym;
-                        state = 9; //go to num
+                        state = 11; //go to num (changed 9 to 11)
                     }
                     else {// saw something other than digit after -
                         error("Error in lexical analysis phase with symbol "
                                 + sym + " in state " + state );
                     }
                 }
-                else if ( state ==9 ) {// saw num
+                else if ( state == 11 ) {// saw num (changed 9 to 11)
                     if ( digit( sym ) ) {
                         data += (char) sym;
-                        state = 9; //go to num
+                        state = 11; //go to num (changed 9 to 11)
                     }
                     else if(sym == '.'){
                         data += (char) sym;
-                        state = 10; //go to num
+                        state = 12; //go to num (changed 10 to 12)
                     }
                     else {// saw something other than digit after -
                         putBackSymbol( sym );  // for next token
                         return new Token( "num",data );
                     }
                 }
-                else if ( state == 10 ) {// saw /, might be single or comment
+                else if ( state == 12 ) {// saw /, might be single or comment (changed 10 to 12)
                     if ( digit( sym ) ) {
                         data += (char) sym;
-                        state = 10; //go to num
+                        state = 12; //go to num (changed 10 to 12)
                     }
                     else {// saw something other than * after /
                         putBackSymbol( sym );  // for next token
                         return new Token( "num",data );
                     }
                 }
-                else if ( state == 12 ) {// looking for / to follow *?
+                else if ( state == 14 ) {// looking for / to follow *? (changed 12 to 14)
                     if ( sym == '/' ) {// comment is done
-                        state = 13;  // continue in this call to getNextToken
+                        state = 15;  // continue in this call to getNextToken (changed 13 to 15)
                         data = "";
                     }
                     else // saw something other than digit after -
                         error("Error in lexical analysis phase with symbol "
                                 + sym + " in state " + state );
                 }
-                else if ( state == 13 ) {// looking for / to follow *?
+                else if ( state == 15 ) {// looking for / to follow *? (changed 13 to 15)
                     if ( sym != 92 ) { // comment is done
-                        state = 13;  // continue in this call to getNextToken
+                        state = 15;  // continue in this call to getNextToken (changed 13 to 15)
                         data = "";
                     }
                     else if ( sym == 92 ) { // comment is done
@@ -230,7 +230,7 @@ public class Lexer {
                     return new Token( "name", data );
                 }
             }
-            else if ( state == 11 ) {
+            else if ( state == 13 ) { // (changed 11 to 13)
                 // symbols
                 if ( data.equals("(") || data.equals(")") ||
                         data.equals("{") || data.equals("}") ||
@@ -248,13 +248,13 @@ public class Lexer {
             else if ( state == 3 ) {
                 return new Token( "className", data );
             }
-            else if ( state == 9 || state == 10 ) {
+            else if ( state == 11 || state == 12 ) { // (changed 9 to 11, 10 to 12)
                 return new Token( "num", data );
             }
-            else if ( state == 6) {
+            else if ( state == 8) { // (changed 6 to 8)
                 return new Token( "string", data );
             }
-            else if ( state == 14 ) {//pfennel changed  9to 14
+            else if ( state == 16 ) {// (changed 14 to 16)
                 return new Token( "eof", data );
             }
             else {// Lexer error
