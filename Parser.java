@@ -42,10 +42,16 @@ public class Parser {
       errorCheck(token, "class");
       Token name = lex.getNextToken();
       errorCheck(name, "className");
-      token.getNextToken();
+      token = lex.getNextToken();
       errorCheck(token, "single", "{");
-      Node first = parseMembers();
-      return new Node("class", name.getDetails(), first, null, null);
+      token = lex.getNextToken();
+      if(token.isKind("members")) { // have members
+          Node first = parseMembers();
+          return new Node("class", name.getDetails(), first, null, null);
+      }
+      else { // no members
+          return new Node("class", name.getDetails(), null, null, null);
+      }      
    }
 
    public Node parseMembers() {
@@ -82,7 +88,7 @@ public class Parser {
             return new Node("member", first, null, null);
          }
       }
-      else if (token.isKind("name") { //child might be a <instanceField> or <instanceMethod>
+      else if (token.isKind("name")) { //child might be a <instanceField> or <instanceMethod>
          Token name = token;
          token = lex.getNextToken();
          if (token.matches("single", "(")) { //child is an <instanceMethod>
@@ -112,15 +118,15 @@ public class Parser {
 
    public Node parseStaticField() {
       System.out.println("-----> parsing <staticField>:");
-      Node name = lex.getNextToken();
-      errorCheck(name, "name");
       Token token = lex.getNextToken();
+      errorCheck(token, "name");
+      token = lex.getNextToken();
       if (token.matches("single", "=")) { //child is an <expression>
          Node first = parseExpression();
-         return new Node("staticField", name.getDetails(), first, null, null);
+         return new Node("staticField", token.getDetails(), first, null, null);
       }
       else { //node is a declaration
-         return new Node("staticField", name.getDetails(), null, null, null);
+         return new Node("staticField", token.getDetails(), null, null, null);
       }
    }
 
@@ -149,50 +155,62 @@ public class Parser {
 
    public Node parseInstanceField() {
       System.out.println("-----> parsing <instanceField>:");
+      return null;
    }
 
    public Node parseConstructor() {
       System.out.println("-----> parsing <constructor>:");
+      return null;
    }
 
    public Node parseInstanceMethod() {
       System.out.println("-----> parsing <instanceMethod>:");
+      return null;
    }
 
    public Node parseParams() {
       System.out.println("-----> parsing <params>:");
+      return null;
    }
 
    public Node parseStatements() {
       System.out.println("-----> parsing <statements>:");
+      return null;
    }
 
    public Node parseStatement() {
       System.out.println("-----> parsing <statement>:");
+      return null;
    }
 
    public Node parseForStatement() {
       System.out.println("-----> parsing <forStatement>:");
+      return null;
    }
 
    public Node parseIfStatement() {
       System.out.println("-----> parsing <ifStatement>:");
+      return null;
    }
 
    public Node parseExpression() {
       System.out.println("-----> parsing <expression>:");
+      return null;
    }
 
    public Node parseCall() {
       System.out.println("-----> parsing <call>:");
+      return null;
    }
 
    public Node parseCaller() {
       System.out.println("-----> parsing <caller>:");
+      return null;
    }
 
    public Node parseArgs() {
       System.out.println("-----> parsing <args>:");
+      return null;
    }
 
    // check whether token is correct kind
