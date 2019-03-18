@@ -97,10 +97,10 @@ public class Parser {
             Node first = parseInstanceMethod();
             return new Node("member", first, null, null);
          }
-         else { //child is an <instanceMethod>
+         else { //child is an <instanceField>
             lex.putBackToken(token);
             lex.putBackToken(name);
-            Node first = parseInstanceMethod();
+            Node first = parseInstanceField();
             return new Node("member", first, null, null);
          }
       }
@@ -155,7 +155,9 @@ public class Parser {
 
    public Node parseInstanceField() {
       System.out.println("-----> parsing <instanceField>:");
-      return null;
+      Token name = lex.getNextToken();
+      errorCheck(name, "name");
+      return new Node("instanceField", name.getDetails(), null, null, null);
    }
 
    public Node parseConstructor() {
