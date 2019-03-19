@@ -209,13 +209,13 @@ public class Parser {
       return null;
    }
 
-   public Node parseMethodBody() {
-      System.out.println("-----> parsing <methodBody>");
-      return null;
-   }
-
    public Node parseParams() {
       System.out.println("-----> parsing <params>:");
+      return null;
+   }
+    
+   public Node parseMethodBody() {
+      System.out.println("-----> parsing <methodBody>");
       return null;
    }
 
@@ -231,6 +231,16 @@ public class Parser {
 
    public Node parseWhileStatement() {
       System.out.println("----> parsing <whileStatement>");
+      return null;
+   }
+   
+   public Node parseIfStatement() {
+      System.out.println("----> parsing <ifStatement>");
+      return null;
+   }
+    
+   public Node parseLoopBody() {
+      System.out.println("----> parsing <loopBody>");
       return null;
    }
 
