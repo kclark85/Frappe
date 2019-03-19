@@ -204,6 +204,16 @@ public class Parser {
       return null;
    }
 
+   public Node parseRestOfMethod() {
+      System.out.println("-----> parsing <restOfMethod>");
+      return null;
+   }
+
+   public Node parseMethodBody() {
+      System.out.println("-----> parsing <methodBody>");
+      return null;
+   }
+
    public Node parseParams() {
       System.out.println("-----> parsing <params>:");
       return null;
@@ -219,8 +229,8 @@ public class Parser {
       return null;
    }
 
-   public Node parseForStatement() {
-      System.out.println("-----> parsing <forStatement>:");
+   public Node parseWhileStatement() {
+      System.out.println("----> parsing <whileStatement>");
       return null;
    }
 
@@ -241,21 +251,6 @@ public class Parser {
 
    public Node parseArgs() {
       System.out.println("-----> parsing <args>:");
-      return null;
-   }
-
-   public Node parseRestOfMethod() {
-      System.out.println("-----> parsing <restOfMethod>");
-      return null;
-   }
-
-   public Node parseMethodBody() {
-      System.out.println("-----> parsing <methodBody>");
-      return null;
-   }
-
-   public Node parseWhileStatement() {
-      System.out.println("----> parsing <whileStatement>");
       return null;
    }
 
