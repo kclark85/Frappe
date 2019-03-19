@@ -218,13 +218,14 @@ public class Parser {
       return null;
    }
 
-   public Node parseForStatement() {
-      System.out.println("-----> parsing <forStatement>:");
-      return null;
-   }
-
    public Node parseIfStatement() {
-      System.out.println("-----> parsing <ifStatement>:");
+    System.out.println("-----> parsing <whileStatement>:");
+    Token name = lex.getNextToken();
+    return null;
+   }
+   public Node parseWhileStatement() {
+      System.out.println("-----> parsing <whileStatement>:");
+      Token name = lex.getNextToken();
       return null;
    }
 
