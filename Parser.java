@@ -254,7 +254,7 @@ public class Parser {
       return null;
    }
 
-   public Node parseWhile() {
+   public Node parseWhileStatement() {
       System.out.println("----> parsing <whileStatement>");
       return null;
    }
