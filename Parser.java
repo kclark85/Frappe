@@ -44,14 +44,8 @@ public class Parser {
       errorCheck(name, "className");
       token = lex.getNextToken();
       errorCheck(token, "single", "{");
-      token = lex.getNextToken();
-      if(token.isKind("members")) { // have members
-          Node first = parseMembers();
-          return new Node("class", name.getDetails(), first, null, null);
-      }
-      else { // no members
-          return new Node("class", name.getDetails(), null, null, null);
-      }      
+      Node first = parseMembers();
+      return new Node("class", name.getDetails(), first, null, null);
    }
 
    public Node parseMembers() {
