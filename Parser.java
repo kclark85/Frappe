@@ -1,5 +1,6 @@
+
 /*
-    This class provides a recursive descent parser 
+    This class provides a recursive descent parser
     for Frappe,
     creating a parse tree which can be interpreted
     to simulate execution of a Frappe program
@@ -162,39 +163,39 @@ public class Parser {
       errorCheck(token, "single", "(");
       token = lex.getNextToken();
       if(token.matches("single",")")) { // no params
-          token = lex.getNextToken();
-          errorCheck(token, "single", "{");
-          token = lex.getNextToken();
-          if(token.matches("single", "}")) { // no statements
-              return new Node("constructor", name.getDetails(), null, null, null);
-          }
-          else { //have statements
-              lex.putBackToken(token);
-              Node second = parseStatements();
-              token = lex.getNextToken();
-              lex.putBackToken(token);
-              errorCheck(token, "single", "}");
-              return new Node("constructor", name.getDetails(), null, second, null);
-          }
+         token = lex.getNextToken();
+         errorCheck(token, "single", "{");
+         token = lex.getNextToken();
+         if(token.matches("single", "}")) { // no statements
+            return new Node("constructor", name.getDetails(), null, null, null);
+         }
+         else { //have statements
+            lex.putBackToken(token);
+            Node second = parseStatements();
+            token = lex.getNextToken();
+            lex.putBackToken(token);
+            errorCheck(token, "single", "}");
+            return new Node("constructor", name.getDetails(), null, second, null);
+         }
       }
       else { // have params
-          lex.putBackToken(token);
-          Node first = parseParams();
-          token = lex.getNextToken();
-          errorCheck(token, "single", ")");          
-          token = lex.getNextToken();
-          errorCheck(token, "single", "{");
-          token = lex.getNextToken();
-          if(token.matches("single", "}")) { // no statements
-              return new Node("constructor", name.getDetails(), first, null, null);
-          }
-          else { // have statements
-              lex.putBackToken(token);
-              Node second = parseStatements();
-              token = lex.getNextToken();
-              errorCheck(token, "single", "}" );
-              return new Node("funcDef", name.getDetails(), first, second, null );
-          }
+         lex.putBackToken(token);
+         Node first = parseParams();
+         token = lex.getNextToken();
+         errorCheck(token, "single", ")");
+         token = lex.getNextToken();
+         errorCheck(token, "single", "{");
+         token = lex.getNextToken();
+         if(token.matches("single", "}")) { // no statements
+            return new Node("constructor", name.getDetails(), first, null, null);
+         }
+         else { // have statements
+            lex.putBackToken(token);
+            Node second = parseStatements();
+            token = lex.getNextToken();
+            errorCheck(token, "single", "}" );
+            return new Node("funcDef", name.getDetails(), first, second, null );
+         }
       }
    }
 
@@ -218,14 +219,8 @@ public class Parser {
       return null;
    }
 
-   public Node parseIfStatement() {
-    System.out.println("-----> parsing <whileStatement>:");
-    Token name = lex.getNextToken();
-    return null;
-   }
-   public Node parseWhileStatement() {
-      System.out.println("-----> parsing <whileStatement>:");
-      Token name = lex.getNextToken();
+   public Node parseForStatement() {
+      System.out.println("-----> parsing <forStatement>:");
       return null;
    }
 
@@ -249,22 +244,37 @@ public class Parser {
       return null;
    }
 
+   public Node parseRestOfMethod() {
+      System.out.println("-----> parsing <restOfMethod>");
+      return null;
+   }
+
+   public Node parseMethodBody() {
+      System.out.println("-----> parsing <methodBody>");
+      return null;
+   }
+
+   public Node parseWhile() {
+      System.out.println("----> parsing <whileStatement>");
+      return null;
+   }
+
    // check whether token is correct kind
    private void errorCheck( Token token, String kind ) {
       if( ! token.isKind( kind ) ) {
-         System.out.println("Error:  expected " + token + 
-                            " to be of kind " + kind );
+         System.out.println("Error:  expected " + token +
+                 " to be of kind " + kind );
          System.exit(1);
       }
    }
 
    // check whether token is correct kind and details
    private void errorCheck( Token token, String kind, String details ) {
-      if( ! token.isKind( kind ) || 
-          ! token.getDetails().equals( details ) ) {
-         System.out.println("Error:  expected " + token + 
-                             " to be kind= " + kind + 
-                             " and details= " + details );
+      if( ! token.isKind( kind ) ||
+              ! token.getDetails().equals( details ) ) {
+         System.out.println("Error:  expected " + token +
+                 " to be kind= " + kind +
+                 " and details= " + details );
          System.exit(1);
       }
    }
