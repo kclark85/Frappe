@@ -1,0 +1,6 @@
+class Test1 {
+  static method() {
+    num a = 5
+    return a
+   }
+}
