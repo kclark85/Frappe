@@ -135,7 +135,7 @@ public class Parser {
       if (token.matches("single", ")")) { //no params
          token = lex.getNextToken();
          errorCheck(token, "single", "{");
-         Node first = parseStatements();
+         Node first = parseRestOfMethod();
          return new Node("staticMethod", name.getDetails(), first, null, null);
       }
       else { //has params
@@ -143,7 +143,7 @@ public class Parser {
          Node first = parseParams();
          token = lex.getNextToken();
          errorCheck(token, "single", "{");
-         Node second = parseStatements();
+         Node second = parseRestOfMethod();
          return new Node("staticMethod", name.getDetails(), first, second, null);
       }
    }
@@ -159,73 +159,82 @@ public class Parser {
       System.out.println("-----> parsing <constructor>:");
       Token name = lex.getNextToken();
       errorCheck(name, "className");
-      Token token = lex.getNextToken();
-      errorCheck(token, "single", "(");
-      token = lex.getNextToken();
-      if(token.matches("single",")")) { // no params
-         token = lex.getNextToken();
-         errorCheck(token, "single", "{");
-         token = lex.getNextToken();
-         if(token.matches("single", "}")) { // no statements
-            return new Node("constructor", name.getDetails(), null, null, null);
-         }
-         else { //have statements
-            lex.putBackToken(token);
-            Node second = parseStatements();
-            token = lex.getNextToken();
-            lex.putBackToken(token);
-            errorCheck(token, "single", "}");
-            return new Node("constructor", name.getDetails(), null, second, null);
-         }
-      }
-      else { // have params
-         lex.putBackToken(token);
-         Node first = parseParams();
-         token = lex.getNextToken();
-         errorCheck(token, "single", ")");
-         token = lex.getNextToken();
-         errorCheck(token, "single", "{");
-         token = lex.getNextToken();
-         if(token.matches("single", "}")) { // no statements
-            return new Node("constructor", name.getDetails(), first, null, null);
-         }
-         else { // have statements
-            lex.putBackToken(token);
-            Node second = parseStatements();
-            token = lex.getNextToken();
-            errorCheck(token, "single", "}" );
-            return new Node("funcDef", name.getDetails(), first, second, null );
-         }
-      }
+      return new Node("constructor", name.getDetails(), null, null, null);
+      
    }
 
    public Node parseInstanceMethod() {
       System.out.println("-----> parsing <instanceMethod>:");
-      return null;
+      Token name = lex.getNextToken();
+      errorCheck(name, "name");
+      return new Node("instanceMethod", name.getDetails(), null, null, null);
    }
 
    public Node parseRestOfMethod() {
       System.out.println("-----> parsing <restOfMethod>");
-      return null;
+      Token token = lex.getNextToken();
+      errorCheck(token, "single", "(");
+      token = lex.getNextToken();
+      if(token.matches("single",")")) { // no params     
+          Node first = parseMethodBody();
+          return new Node("restOfMethod", first, null, null);
+      }
+      else { // have params
+         lex.putBackToken(token);
+         Node first = parseParams();
+         Node second = parseMethodBody();
+         return new Node("restOfMethod", first, second, null);
+      }
    }
 
    public Node parseParams() {
       System.out.println("-----> parsing <params>:");
-      return null;
+      Token name = lex.getNextToken();
+      errorCheck(name, "name");
+      Token token = lex.getNextToken();
+      if(token.matches("single", ",")){ // have more params
+          Node first = parseParams();
+          return new Node("params", name.getDetails(), first, null, null);
+      }
+      else { // no more params
+          lex.putBackToken(token);
+          return new Node("params", name.getDetails(), null, null, null);
+      }
    }
     
    public Node parseMethodBody() {
       System.out.println("-----> parsing <methodBody>");
-      return null;
+      Token token = lex.getNextToken();
+      errorCheck(token, "{");
+      token = lex.getNextToken();
+      if(token.matches("single", "}")){ // no statements
+          return new Node("methodBody", null, null, null);
+      }
+      else { // have statements
+          lex.putBackToken(token);
+          Node first = parseStatements();
+          return new Node("methodBody", first, null, null);
+      }
    }
 
    public Node parseStatements() {
       System.out.println("-----> parsing <statements>:");
-      return null;
+      Node first = parseStatement();
+      Token token = lex.getNextToken();
+      if(token.matches("single", "}")){ // no more statements
+          return new Node("statements", first, null, null);          
+      }
+      else {
+          lex.putBackToken(token);;
+          Node second = parseStatements();
+          return new Node("statements", first, second, null);
+      }
    }
 
    public Node parseStatement() {
       System.out.println("-----> parsing <statement>:");
+      Token token = lex.getNextToken();
+      // left off here
       return null;
    }
 
