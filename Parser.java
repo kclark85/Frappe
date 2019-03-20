@@ -183,7 +183,7 @@ public class Parser {
           return new Node("params", name.getDetails(), first, null, null);
       }
       else { // no more params
-          lex.putBackToken(token);
+          errorCheck(token, "single", ")");
           return new Node("params", name.getDetails(), null, null, null);
       }
    }
