@@ -144,8 +144,8 @@ public class Parser {
       System.out.println("-----> parsing <constructor>:");
       Token name = lex.getNextToken();
       errorCheck(name, "className");
-      return new Node("constructor", name.getDetails(), null, null, null);
-      
+      Node first = parseRestOfMethod();
+      return new Node("constructor", name.getDetails(), first, null, null);
    }
 
    public Node parseInstanceMethod() {
