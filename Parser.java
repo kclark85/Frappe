@@ -220,8 +220,26 @@ public class Parser {
    public Node parseStatement() {
       System.out.println("-----> parsing <statement>:");
       Token token = lex.getNextToken();
-      // left off here
-      return null;
+      if(token.isKind("while")) { // whileStatement
+          lex.putBackToken(token);
+          Node first = parseWhileStatement();
+          return new Node("statement", first, null, null);
+      }
+      else if(token.isKind("if")) { // ifStatement
+          lex.putBackToken(token);
+          Node first = parseIfStatement();
+          return new Node("statement", first, null, null);
+      }
+      else if(token.isKind("return")) { // RETURN <expression>
+          
+      }
+      else if(token.isKind("name")) {
+          
+      }
+      else {
+          
+      }
+      return null; // needs removed when finished
    }
 
    public Node parseWhileStatement() {
@@ -243,16 +261,21 @@ public class Parser {
       System.out.println("-----> parsing <expression>:");
       return null;
    }
-
-   public Node parseCall() {
-      System.out.println("-----> parsing <call>:");
-      return null;
-   }
+   
+   public Node parseRefChain() {
+       System.out.println("-----> parsing <refChain>:");
+       return null;
+    }
 
    public Node parseCaller() {
       System.out.println("-----> parsing <caller>:");
       return null;
    }
+   
+   public Node parseArgsPart() {
+       System.out.println("-----> parsing <argsPart>:");
+       return null;
+    }
 
    public Node parseArgs() {
       System.out.println("-----> parsing <args>:");
