@@ -293,9 +293,22 @@ public class Parser {
    }
 
    public Node parseArgsPart() {
-      System.out.println("-----> parsing <argsPart>:");
-      return null;
-   }
+       System.out.println("-----> parsing <argsPart>:");
+       Token token = lex.getNextToken();
+       errorCheck(token, "single", "(");
+       token = lex.getNextToken();
+       if(token.matches("single",")")) { // no params     
+          Node first = parseArgsPart();
+          return new Node("parseArgsPart", first, null, null);
+          }
+       else{
+          errorCheck(token, "name", "args");
+          lex.putBackToken(token);
+          Node first = parseArgs();
+          return new Node("argsPart", first, null, null);
+
+          }
+    }
 
    public Node parseArgs() {
       System.out.println("-----> parsing <args>:");
