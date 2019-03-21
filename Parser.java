@@ -279,7 +279,18 @@ public class Parser {
 
    public Node parseExpression() {
       System.out.println("-----> parsing <expression>:");
-      return null;
+      Token token = lex.getNextToken();
+      if(token.getDetails().equalsIgnoreCase("str") || token.getDetails().equalsIgnoreCase("num")||
+              token.getDetails().equalsIgnoreCase("null") || token.getDetails().equalsIgnoreCase("this")||
+              token.getDetails().equalsIgnoreCase("true") || token.getDetails().equalsIgnoreCase("false")){
+         return new Node("expression", null, null, null); //not sure if k would be "expression" or "statement"
+      }
+      else{
+         lex.putBackToken(token);
+         Node first = parseRefChain();
+         return new Node("statement", first, null, null);
+      }
+      //return null;
    }
 
    public Node parseRefChain() {
@@ -293,22 +304,22 @@ public class Parser {
    }
 
    public Node parseArgsPart() {
-       System.out.println("-----> parsing <argsPart>:");
-       Token token = lex.getNextToken();
-       errorCheck(token, "single", "(");
-       token = lex.getNextToken();
-       if(token.matches("single",")")) { // no params     
-          Node first = parseArgsPart();
-          return new Node("parseArgsPart", first, null, null);
-          }
-       else{
-          errorCheck(token, "name", "args");
-          lex.putBackToken(token);
-          Node first = parseArgs();
-          return new Node("argsPart", first, null, null);
+      System.out.println("-----> parsing <argsPart>:");
+      Token token = lex.getNextToken();
+      errorCheck(token, "single", "(");
+      token = lex.getNextToken();
+      if(token.matches("single",")")) { // no params
+         Node first = parseArgsPart();
+         return new Node("parseArgsPart", first, null, null);
+      }
+      else{
+         errorCheck(token, "name", "args");
+         lex.putBackToken(token);
+         Node first = parseArgs();
+         return new Node("argsPart", first, null, null);
 
-          }
-    }
+      }
+   }
 
    public Node parseArgs() {
       System.out.println("-----> parsing <args>:");
