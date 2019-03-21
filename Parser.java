@@ -234,8 +234,15 @@ public class Parser {
           
       }
       else if(token.isKind("name")) {
+
           
       }
+      else if (name.matches("name", "else")) { //Else statment
+            lex.putBackToken(name);
+            Node first = parseElseStatement();
+            return new Node("ifStatement", name.getDetails(), first, null, null);
+            }
+
       else {
           
       }
