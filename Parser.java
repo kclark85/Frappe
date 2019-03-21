@@ -304,7 +304,27 @@ public class Parser {
 
    public Node parseRHS() {
       System.out.println("-----> parsing <rhs>:");
-      return null;
+      Token token = lex.getNextToken();
+      if(!token.isKind("new")){  //if the RHS is an expression
+         lex.putBackToken(token);
+         Node first = parseExpression();
+         return new Node("statement", first, null, null);
+      }
+      errorCheck(token, "new"); //if the RHS is a class declaration
+      Token className = lex.getNextToken();
+      errorCheck(className, "className");
+      Token single = lex.getNextToken();
+      errorCheck(single, "single", "(");
+      Token args = lex.getNextToken();
+      if(args.getDetails()==")"){
+         return new Node("statement", null, null, null);
+      }
+      else{
+         lex.putBackToken(args);
+         Node first = parseArgs();
+         return new Node("statement", first, null,null);
+      }
+      //return null;
    }
 
    // check whether token is correct kind
