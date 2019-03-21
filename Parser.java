@@ -295,7 +295,16 @@ public class Parser {
 
    public Node parseRefChain() {
       System.out.println("-----> parsing <refChain>:");
-      return null;
+      Node first = parseCaller();
+      Token token = lex.getNextToken();
+      if(token.getDetails() == "."){
+         Node second = parseRefChain();
+         return new Node("statement", first, second, null);
+      }
+      else {
+         return new Node("statement", first, null, null);
+      }
+      //return null;
    }
 
    public Node parseCaller() {
