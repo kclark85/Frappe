@@ -330,10 +330,21 @@ public class Parser {
       }
    }
 
-   public Node parseArgs() {
-      System.out.println("-----> parsing <args>:");
-      return null;
-   }
+    public Node parseArgs() {
+        System.out.println("-----> parsing <args>:");
+        Token token = lex.getNextToken();
+        errorCheck(token, "name", "args");
+        Node first = parseExpression();
+        token = lex.getNextToken();
+        if(token.matches("single",")")) { // no params   
+            return new Node("args", first, null, null);
+        }
+        else{
+            lex.putBackToken(token);
+            Node second = parseArgs();
+            return new Node("args", first, second, null);
+        }
+    }
 
    public Node parseRHS() {
       System.out.println("-----> parsing <rhs>:");
