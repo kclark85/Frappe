@@ -162,7 +162,7 @@ public class Parser {
       errorCheck(token, "single", "(");
       token = lex.getNextToken();
       if(token.matches("single",")")) { // no params
-         token = lex.getNextToken();
+         //token = lex.getNextToken();
          Node first = parseMethodBody();
          return new Node("restOfMethod", first, null, null);
       }
@@ -170,7 +170,7 @@ public class Parser {
          Node first = parseParams();
          token = lex.getNextToken();
          errorCheck(token, "single", ")");
-         token = lex.getNextToken();
+         //token = lex.getNextToken();
          Node second = parseMethodBody();
          return new Node("restOfMethod", first, second, null);
       }
@@ -202,8 +202,6 @@ public class Parser {
       }
       else { // have statements
          Node first = parseStatements();
-         token = lex.getNextToken();
-         errorCheck(token, "single", "}");
          return new Node("methodBody", first, null, null);
       }
    }
@@ -213,7 +211,7 @@ public class Parser {
       Node first = parseStatement();
       Token token = lex.getNextToken();
       if(token.matches("single", "}")){ // no more statements
-          lex.putBackToken(token);
+         lex.putBackToken(token);
          return new Node("statements", first, null, null);
       }
       else {
