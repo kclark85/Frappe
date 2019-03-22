@@ -213,10 +213,10 @@ public class Parser {
       Node first = parseStatement();
       Token token = lex.getNextToken();
       if(token.matches("single", "}")){ // no more statements
+          lex.putBackToken(token);
          return new Node("statements", first, null, null);
       }
       else {
-         lex.putBackToken(token);
          Node second = parseStatements();
          return new Node("statements", first, second, null);
       }
