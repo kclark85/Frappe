@@ -195,14 +195,15 @@ public class Parser {
    public Node parseMethodBody() {
       System.out.println("-----> parsing <methodBody>");
       Token token = lex.getNextToken();
-      errorCheck(token, "{");
+      errorCheck(token, "single", "{");
       token = lex.getNextToken();
       if(token.matches("single", "}")){ // no statements
          return new Node("methodBody", null, null, null);
       }
       else { // have statements
-         lex.putBackToken(token);
          Node first = parseStatements();
+         token = lex.getNextToken();
+         errorCheck(token, "single", "}");
          return new Node("methodBody", first, null, null);
       }
    }
