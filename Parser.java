@@ -182,11 +182,12 @@ public class Parser {
       errorCheck(name, "name");
       Token token = lex.getNextToken();
       if(token.matches("single", ",")){ // have more params
+          token = lex.getNextToken();
          Node first = parseParams();
          return new Node("params", name.getDetails(), first, null, null);
       }
       else { // no more params
-         errorCheck(token, "single", ")");
+         lex.putBackToken(token);
          return new Node("params", name.getDetails(), null, null, null);
       }
    }
