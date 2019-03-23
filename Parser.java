@@ -124,6 +124,7 @@ public class Parser {
          return new Node("staticField", name.getDetails(), first, null, null);
       }
       else { //node is a declaration
+         lex.putBackToken(token);
          return new Node("staticField", name.getDetails(), null, null, null);
       }
    }
