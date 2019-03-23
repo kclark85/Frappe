@@ -310,7 +310,19 @@ public class Parser {
 
    public Node parseLoopBody() {
       System.out.println("----> parsing <loopBody>");
-      return null;
+      Token token = lex.getNextToken();
+      errorCheck(token, "single", "(");
+      token = lex.getNextToken();
+      if(token.matches("single", ")")) { // no statements
+          return new Node("loopBody", null, null, null);
+      }
+      else { // has statements
+          lex.putBackToken(token);
+          Node first = parseStatements();
+          token = lex.getNextToken();
+          errorCheck(token, "single", ")");
+          return new Node("loopBody", first, null, null);
+      }
    }
 
    public Node parseExpression() {
