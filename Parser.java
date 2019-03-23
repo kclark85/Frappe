@@ -267,7 +267,15 @@ public class Parser {
 
    public Node parseWhileStatement() {
       System.out.println("----> parsing <whileStatement>");
-      return null;
+      Token token = lex.getNextToken();
+      errorCheck(token, "while");
+      token = lex.getNextToken();
+      errorCheck(token, "single", ")");
+      Node first = parseExpression();
+      token = lex.getNextToken();
+      errorCheck(token, "single", ")");
+      Node second = parseLoopBody();
+      return new Node("whileStatement", first, second, null);
    }
 
    public Node parseIfStatement() {
