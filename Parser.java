@@ -67,18 +67,19 @@ public class Parser {
       System.out.println("-----> parsing <member>:");
       Token token = lex.getNextToken();
       if (token.isKind("static")) { //child might be a <staticMethod> or <staticField>
-         Token name = lex.getNextToken();
-         errorCheck(name, "name");
-         token = lex.getNextToken();
-         if (token.matches("single", "(")) { //child is a <staticMethod>
-            lex.putBackToken(token);
-            lex.putBackToken(name);
+         // Token name = lex.getNextToken();
+         Token second = lex.getNextToken();
+         errorCheck(second, "name");
+         Token third = lex.getNextToken();
+         if (third.matches("single", "(")) { //child is a <staticMethod>
+            lex.putBackToken(second);
+            lex.putBackToken(third);
             Node first = parseStaticMethod();
             return new Node("member", first, null, null);
          }
          else { //child is a <staticField>
-            lex.putBackToken(token);
-            lex.putBackToken(name);
+            lex.putBackToken(third);
+            lex.putBackToken(second);
             Node first = parseStaticField();
             return new Node("member", first, null, null);
          }
