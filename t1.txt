@@ -1,5 +1,5 @@
 class T1 {
   static method() {
-    books a = new Num(5)
+    a = new Num(5)
    }
 }
