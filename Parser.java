@@ -72,8 +72,8 @@ public class Parser {
          errorCheck(second, "name");
          Token third = lex.getNextToken();
          if (third.matches("single", "(")) { //child is a <staticMethod>
-            lex.putBackToken(second);
             lex.putBackToken(third);
+            lex.putBackToken(second);
             Node first = parseStaticMethod();
             return new Node("member", first, null, null);
          }
@@ -114,15 +114,15 @@ public class Parser {
 
    public Node parseStaticField() {
       System.out.println("-----> parsing <staticField>:");
+      Token name = lex.getNextToken();
+      errorCheck(name, "name");
       Token token = lex.getNextToken();
-      errorCheck(token, "name");
-      token = lex.getNextToken();
       if (token.matches("single", "=")) { //child is an <expression>
          Node first = parseExpression();
-         return new Node("staticField", token.getDetails(), first, null, null);
+         return new Node("staticField", name.getDetails(), first, null, null);
       }
       else { //node is a declaration
-         return new Node("staticField", token.getDetails(), null, null, null);
+         return new Node("staticField", name.getDetails(), null, null, null);
       }
    }
 
