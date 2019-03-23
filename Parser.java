@@ -346,7 +346,23 @@ public class Parser {
 
    public Node parseCaller() {
       System.out.println("-----> parsing <caller>:");
-      return null;
+      Token name = lex.getNextToken();
+      if(name.isKind("className")) { // CLASSNAME
+          return new Node("caller", name.getDetails(), null, null, null);
+      }
+      else { // NAME | NAME <argsPart>
+          errorCheck(name, "name");
+          Token token = lex.getNextToken();
+          if(token.matches("single", "(")) { // NAME <argsPart>
+              lex.putBackToken(token);
+              Node first = parseArgsPart();
+              return new Node("caller", name.getDetails(), first, null, null);
+          }
+          else { // NAME
+              lex.putBackToken(token);
+              return new Node("caller", name.getDetails(), null, null, null);
+          }
+      }
    }
 
    public Node parseArgsPart() {
