@@ -56,6 +56,7 @@ public class Parser {
       Node first = parseMember();
       Token token = lex.getNextToken();
       if (token.matches("single", "}")) { //there are no more members
+         lex.putBackToken(token);
          return new Node("members", first, null, null);
       }
       else { //there is another member
