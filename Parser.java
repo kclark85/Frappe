@@ -46,6 +46,8 @@ public class Parser {
       token = lex.getNextToken();
       errorCheck(token, "single", "{");
       Node first = parseMembers();
+      token = lex.getNextToken();
+      errorCheck(token, "single", "}");
       return new Node("class", name.getDetails(), first, null, null);
    }
 
