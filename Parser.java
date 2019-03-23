@@ -226,43 +226,39 @@ public class Parser {
    public Node parseStatement() {
       System.out.println("-----> parsing <statement>:");
       Token token = lex.getNextToken();
-      if(token.isKind("while")) { // whileStatement
-         lex.putBackToken(token);
-         Node first = parseWhileStatement();
-         return new Node("statement", first, null, null);
+      if(token.isKind("name")) { // <rhs> ~OR~ <refChain>
+          Token second = lex.getNextToken();
+          if(second.matches("single", "=")) { // NAME EQUALS <rhs>
+              Node first = parseRHS();
+              return new Node("statement", first, null, null);
+          }
+          else { // <refChain>
+              lex.putBackToken(token);
+              lex.putBackToken(second);
+              Node first = parseRefChain();
+              return new Node("statement", first, null, null);              
+          }
       }
-      else if(token.isKind("if")) { // ifStatement
-         lex.putBackToken(token);
-         Node first = parseIfStatement();
-         return new Node("statement", first, null, null);
+      else if(token.isKind("className")) { // <refChain>
+          lex.putBackToken(token);
+          Node first = parseRefChain();
+          return new Node("statement", first, null, null);
       }
-      else if(token.isKind("return")) { // RETURN <expression>
-         lex.putBackToken(token);
+      else if(token.isKind("while")) { // <whileStatement>
+          lex.putBackToken(token);
+          Node first = parseWhileStatement();
+          return new Node("statement", first, null, null);          
       }
-      else if(token.isKind("name")) {
-         Token name = token;
-         token = lex.getNextToken();
-         errorCheck(token, "single", "=");
-         Node first = parseRHS();
-         return new Node("statement", name.getDetails(), first,null, null);
+      else if(token.isKind("if")) { // <ifStatement>
+          lex.putBackToken(token);
+          Node first = parseIfStatement();
+          return new Node("statement", first, null, null);
       }
-      else if(token.isKind("new")) {
-         Token className = lex.getNextToken();
-         errorCheck(className, "className");
-         Token single = lex.getNextToken();
-         errorCheck(single, "single", "(");
-         Token args = lex.getNextToken();
-         if(args.getDetails()==")"){
-            return new Node("statement", null, null, null);
-         }
-         else{
-            lex.putBackToken(args);
-            Node first = parseArgs();
-            return new Node("statement", first, null,null);
-         }
-
+      else {
+          errorCheck(token, "return");
+          Node first = parseExpression();
+          return new Node("statement", first, null, null);
       }
-      return null; // needs removed when finished
    }
 
    public Node parseWhileStatement() {
