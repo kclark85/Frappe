@@ -1,5 +1,3 @@
 class T1 {
-  static method() {
-    a = new Num(5)
-   }
+  static a
 }

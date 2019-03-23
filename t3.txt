@@ -1,5 +1,5 @@
-class Class1 {
-    Str test = "random string"
+class T3 {
+  static method() {
+    a = 5
+   }
 }
-class Class2 {}
-class Class3 {}
