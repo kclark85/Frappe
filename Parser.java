@@ -323,7 +323,6 @@ public class Parser {
          Node first = parseRefChain();
          return new Node("statement", first, null, null);
       }
-      //return null;
    }
 
    public Node parseRefChain() {
@@ -337,7 +336,6 @@ public class Parser {
       else {
          return new Node("statement", first, null, null);
       }
-      //return null;
    }
 
    public Node parseCaller() {
@@ -372,7 +370,11 @@ public class Parser {
         //lex.putBackToken(token);
         Node first = parseExpression();
         Token token = lex.getNextToken();
-        if(token.matches("single",")")) { // <expression>, <args>  
+        if(token.matches("single", ")")) {
+            lex.putBackToken(token);
+            return new Node("args", first, null, null);
+        }
+        else if(token.matches("single", ",")) { // <expression>, <args>  
             Node second = parseArgs();
             return new Node("args", first, second, null);
         }
