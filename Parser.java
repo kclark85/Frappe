@@ -223,7 +223,6 @@ public class Parser {
    public Node parseStatement() {
       System.out.println("-----> parsing <statement>:");
       Token token = lex.getNextToken();
-
       if(token.isKind("while")) { // whileStatement
          lex.putBackToken(token);
          Node first = parseWhileStatement();
@@ -239,13 +238,11 @@ public class Parser {
       }
       else if(token.isKind("name")) {
          Token name = token;
-         Token equals = lex.getNextToken();
-         errorCheck(equals,"=");
+         token = lex.getNextToken();
+         errorCheck(token, "single", "=");
          Node first = parseRHS();
          return new Node("statement", name.getDetails(), first,null, null);
-
       }
-
       else if(token.isKind("new")) {
          Token className = lex.getNextToken();
          errorCheck(className, "className");
