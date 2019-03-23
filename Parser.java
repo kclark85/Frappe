@@ -271,6 +271,35 @@ public class Parser {
       System.out.println("----> parsing <ifStatement>");
       return null;
    }
+   
+   public Node parseRHS() {
+       System.out.println("-----> parsing <rhs>:");
+       Token token = lex.getNextToken();
+       if(!token.isKind("new")){  //if the RHS is an expression
+          lex.putBackToken(token);
+          Node first = parseExpression();
+          return new Node("RHS", first, null, null);
+       }
+       else { // NEW CLASSNAME <argsPart>
+           errorCheck(token, "new"); //if the RHS is a class declaration
+           Token className = lex.getNextToken();
+           errorCheck(className, "className");
+           Node first = parseArgsPart();
+           return new Node("RHS", first, null, null);
+       }      
+       //Token single = lex.getNextToken();
+       //errorCheck(single, "single", "(");
+       //Token args = lex.getNextToken();
+       //if(args.getDetails()==")"){
+       //   return new Node("statement", null, null, null);
+       //}
+       //else{
+       //   lex.putBackToken(args);
+       //   Node first = parseArgs();
+       //   return new Node("statement", first, null,null);
+       //}
+       //return null;
+    }
 
    public Node parseLoopBody() {
       System.out.println("----> parsing <loopBody>");
@@ -318,15 +347,17 @@ public class Parser {
       errorCheck(token, "single", "(");
       token = lex.getNextToken();
       if(token.matches("single",")")) { // no args
-         Node first = parseArgsPart();
-         return new Node("argsPart", first, null, null);
+         //Node first = parseArgsPart();
+         //return new Node("argsPart", first, null, null);
+         return new Node("argsPart", null, null, null);
       }
       else{
-         errorCheck(token, "name", "args");
+         //errorCheck(token, "name", "args");
          lex.putBackToken(token);
          Node first = parseArgs();
+         token = lex.getNextToken();
+         errorCheck(token, "single", ")");
          return new Node("argsPart", first, null, null);
-
       }
    }
 
@@ -346,35 +377,6 @@ public class Parser {
             return new Node("args", first, second, null);
         }
     }
-
-   public Node parseRHS() {
-      System.out.println("-----> parsing <rhs>:");
-      Token token = lex.getNextToken();
-      if(!token.isKind("new")){  //if the RHS is an expression
-         lex.putBackToken(token);
-         Node first = parseExpression();
-         return new Node("RHS", first, null, null);
-      }
-      else { // NEW CLASSNAME <argsPart>
-          errorCheck(token, "new"); //if the RHS is a class declaration
-          Token className = lex.getNextToken();
-          errorCheck(className, "className");
-          Node first = parseArgsPart();
-          return new Node("RHS", first, null, null);
-      }      
-      //Token single = lex.getNextToken();
-      //errorCheck(single, "single", "(");
-      //Token args = lex.getNextToken();
-      //if(args.getDetails()==")"){
-      //   return new Node("statement", null, null, null);
-      //}
-      //else{
-      //   lex.putBackToken(args);
-      //   Node first = parseArgs();
-      //   return new Node("statement", first, null,null);
-      //}
-      //return null;
-   }
 
    // check whether token is correct kind
    private void errorCheck( Token token, String kind ) {

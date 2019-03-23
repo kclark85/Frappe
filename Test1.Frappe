@@ -1,6 +1,6 @@
 class Test1 {
   static method() {
-    books a = new Num 5
+    books a = new Num(5)
     return a
    }
 }
