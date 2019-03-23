@@ -310,10 +310,13 @@ public class Parser {
    public Node parseExpression() {
       System.out.println("-----> parsing <expression>:");
       Token token = lex.getNextToken();
-      if(token.getDetails().equalsIgnoreCase("str") || token.getDetails().equalsIgnoreCase("num")||
-              token.getDetails().equalsIgnoreCase("null") || token.getDetails().equalsIgnoreCase("this")||
-              token.getDetails().equalsIgnoreCase("true") || token.getDetails().equalsIgnoreCase("false")){
-         return new Node("expression", null, null, null); //not sure if k would be "expression" or "statement"
+      //if(token.getDetails().equalsIgnoreCase("str") || token.getDetails().equalsIgnoreCase("num")||
+      //        token.getDetails().equalsIgnoreCase("null") || token.getDetails().equalsIgnoreCase("this")||
+      //        token.getDetails().equalsIgnoreCase("true") || token.getDetails().equalsIgnoreCase("false")){
+      if(token.isKind("str") || token.isKind("num") || 
+              token.isKind("null") || token.isKind("this") || 
+              token.isKind("true") || token.isKind("false")) {
+         return new Node(token.getKind(), token.getDetails(), null, null, null); //not sure if k would be "expression" or "statement"
       }
       else{
          lex.putBackToken(token);
