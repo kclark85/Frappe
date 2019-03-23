@@ -204,6 +204,7 @@ public class Parser {
          return new Node("methodBody", null, null, null);
       }
       else { // have statements
+         lex.putBackToken(token);
          Node first = parseStatements();
          return new Node("methodBody", first, null, null);
       }
