@@ -363,18 +363,18 @@ public class Parser {
 
     public Node parseArgs() {
         System.out.println("-----> parsing <args>:");
-        Token token = lex.getNextToken();
-        errorCheck(token, "name", "args");
-	lex.putBackToken(token);
+        //Token token = lex.getNextToken();
+        //errorCheck(token, "name", "args");
+        //lex.putBackToken(token);
         Node first = parseExpression();
-        token = lex.getNextToken();
-        if(token.matches("single",")")) { // no more expressions   
-            return new Node("args", first, null, null);
-        }
-        else{
-            lex.putBackToken(token);
+        Token token = lex.getNextToken();
+        if(token.matches("single",")")) { // <expression>, <args>  
             Node second = parseArgs();
             return new Node("args", first, second, null);
+        }
+        else{ // <expression>
+            lex.putBackToken(token);            
+            return new Node("args", first, null, null);
         }
     }
 
