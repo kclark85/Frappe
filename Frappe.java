@@ -10,7 +10,7 @@ public class Frappe {
          name = args[0];
       }
       else {
-         System.out.print("Enter name of Corgi program file: ");
+         System.out.print("Enter name of Frappe program file: ");
          Scanner keys = new Scanner( System.in );
          name = keys.nextLine();
       }
