@@ -1,0 +1,6 @@
+class T4 {
+  static method() {
+    a = 5
+    b = 6
+   }
+}
