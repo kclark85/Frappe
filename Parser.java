@@ -227,6 +227,7 @@ public class Parser {
          return new Node("statements", first, null, null);
       }
       else {
+         lex.putBackToken(token);
          Node second = parseStatements();
          return new Node("statements", first, second, null);
       }
