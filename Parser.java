@@ -292,7 +292,6 @@ public class Parser {
       errorCheck(token, "if");
       token = lex.getNextToken();
       errorCheck(token,"single", "(");
-      token = lex.getNextToken();
       Node first = parseExpression();
       token = lex.getNextToken();
       errorCheck(token,"single", ")");
@@ -424,6 +423,7 @@ public class Parser {
          return new Node("statement", first, second, null);
       }
       else {
+         lex.putBackToken(token);
          return new Node("statement", first, null, null);
       }
    }
