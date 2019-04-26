@@ -1,5 +1,6 @@
-import java.util.*;
-import java.io.*;
+
+        import java.util.*;
+        import java.io.*;
 public class Lexer {
     public static String margin = "";
     // holds any number of tokens that have been put back
@@ -149,7 +150,7 @@ public class Lexer {
                 else if ( state == 8 ) { // (changed 6 to 8
                     putBackSymbol( sym );
                     done = true;
-                    return new Token( "string", data );
+                    return new Token( "str", data );
 
                 }
 
@@ -252,7 +253,7 @@ public class Lexer {
                 return new Token( "num", data );
             }
             else if ( state == 8) { // (changed 6 to 8)
-                return new Token( "string", data );
+                return new Token( "str", data );
             }
             else if ( state == 16 ) {// (changed 14 to 16)
                 return new Token( "eof", data );
@@ -329,3 +330,4 @@ public class Lexer {
         }while( ! token.getKind().equals( "eof" )  );
     }
 }
+
