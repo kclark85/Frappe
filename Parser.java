@@ -48,6 +48,7 @@ public class Parser {
         errorCheck(token, "single", "{");
         token = lex.getNextToken();
         if(!token.isKind("single")) {
+            lex.putBackToken(token);
             Node first = parseMembers();
             token = lex.getNextToken();
             errorCheck(token, "single", "}");
@@ -156,7 +157,16 @@ public class Parser {
         System.out.println("-----> parsing <instanceField>:");
         Token name = lex.getNextToken();
         errorCheck(name, "name");
-        return new Node("instanceField", name.getDetails(), null, null, null);
+        Token token = lex.getNextToken();
+        if (token.matches("single", "=")) { //child is an <expression>
+            Node first = parseExpression();
+            return new Node("instanceField", name.getDetails(), first, null, null);
+        }
+        else { //node is a declaration
+            lex.putBackToken(token);
+            return new Node("instanceField", name.getDetails(), null, null, null);
+        }
+
     }
 
     public Node parseConstructor() {
