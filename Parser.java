@@ -196,6 +196,7 @@ public class Parser {
             return new Node("restOfMethod", first, null, null);
         }
         else { // have params
+            lex.putBackToken(token);
             Node first = parseParams();
             token = lex.getNextToken();
             errorCheck(token, "single", ")");
@@ -211,7 +212,7 @@ public class Parser {
         errorCheck(name, "name");
         Token token = lex.getNextToken();
         if(token.matches("single", ",")){ // have more params
-            token = lex.getNextToken();
+            //token = lex.getNextToken();
             Node first = parseParams();
             return new Node("params", name.getDetails(), first, null, null);
         }
@@ -265,13 +266,13 @@ public class Parser {
             else { // <refChain>
                 lex.putBackToken(token);
                 lex.putBackToken(second);
-                Node first = parseRefChain();
+                Node first = parseRef();
                 return new Node("statement", first, null, null);
             }
         }
         else if(token.isKind("className")) { // <refChain>
             lex.putBackToken(token);
-            Node first = parseRefChain();
+            Node first = parseRef();
             return new Node("statement", first, null, null);
         }
         else if(token.isKind("while")) { // <whileStatement>
@@ -427,22 +428,22 @@ public class Parser {
         }
         else{
             lex.putBackToken(token);
-            Node first = parseRefChain();
-            return new Node("statement", first, null, null);
+            Node first = parseRef();
+            return new Node("expression", first, null, null);
         }
     }
 
-    public Node parseRefChain() {
-        System.out.println("-----> parsing <refChain>:");
+    public Node parseRef() {
+        System.out.println("-----> parsing <ref>:");
         Node first = parseCaller();
         Token token = lex.getNextToken();
-        if(token.getDetails() == "."){
-            Node second = parseRefChain();
-            return new Node("statement", first, second, null);
+        if(token.matches("single", ".")){
+            Node second = parseRef();
+            return new Node("ref", first, second, null);
         }
         else {
             lex.putBackToken(token);
-            return new Node("statement", first, null, null);
+            return new Node("ref", first, null, null);
         }
     }
 

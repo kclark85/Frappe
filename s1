@@ -1,0 +1,17 @@
+class A {
+  static a
+  b
+  c
+  A() {}
+  f(r, s) { }
+  g() { }
+  static main() { }
+}
+
+class B {
+  static main() {}
+}
+
+class C {
+  static main() {}
+}

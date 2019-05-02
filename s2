@@ -1,0 +1,21 @@
+class A {
+  
+   static main() {
+
+      x = 3
+      y = z.f(x)
+
+      if ( a ) {
+         a = 1
+         b = 2 
+      }
+      else {
+         c = 3
+      }
+
+      while ( r ) {
+         d = d.add( 17 )
+      }
+ 
+   }
+}
