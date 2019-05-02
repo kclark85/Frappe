@@ -223,7 +223,8 @@ public class Lexer {
                         data.equals("if") || data.equals("else") ||
                         data.equals("new") || data.equals("void") ||
                         data.equals("null") || data.equals("this") ||
-                        data.equals("true") || data.equals("false")
+                        data.equals("true") || data.equals("false") ||
+                        data.equals("while")
                 ) {
                     return new Token( data, "" );
                 }
