@@ -261,7 +261,7 @@ public class Parser {
             Token second = lex.getNextToken();
             if(second.matches("single", "=")) { // NAME EQUALS <rhs>
                 Node first = parseRHS();
-                return new Node("statement", first, null, null);
+                return new Node("statement", token.getDetails(), first, null, null);
             }
             else { // <refChain>
                 lex.putBackToken(token);
